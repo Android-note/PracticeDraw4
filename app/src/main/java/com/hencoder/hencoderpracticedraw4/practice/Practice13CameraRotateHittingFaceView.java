@@ -47,6 +47,8 @@ public class Practice13CameraRotateHittingFaceView extends View {
         animator.setDuration(5000);
         animator.setInterpolator(new LinearInterpolator());
         animator.setRepeatCount(ValueAnimator.INFINITE);
+
+        camera.setLocation(0, 0, 100);
     }
 
     @Override
@@ -71,18 +73,15 @@ public class Practice13CameraRotateHittingFaceView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int bitmapWidth = bitmap.getWidth();
-        int bitmapHeight = bitmap.getHeight();
-        int centerX = point.x + bitmapWidth / 2;
-        int centerY = point.y + bitmapHeight / 2;
-
         camera.save();
         matrix.reset();
         camera.rotateX(degree);
         camera.getMatrix(matrix);
         camera.restore();
-        matrix.preTranslate(-centerX, -centerY);
-        matrix.postTranslate(centerX, centerY);
+        matrix.preTranslate(-(point.x + bitmap.getWidth() / 2),
+                -(point.y + bitmap.getHeight() / 2));
+        matrix.postTranslate((point.x + bitmap.getWidth() / 2),
+                (point.y + bitmap.getHeight() / 2));
         canvas.save();
         canvas.concat(matrix);
         canvas.drawBitmap(bitmap, point.x, point.y, paint);
